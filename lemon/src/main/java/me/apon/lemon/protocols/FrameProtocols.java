@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import me.apon.lemon.core.LLog;
+import me.apon.lemon.core.LogUtil;
 import me.apon.lemon.core.Protocols;
 
 
@@ -41,7 +41,7 @@ public class FrameProtocols implements Protocols {
     public byte[] unpack(InputStream inputStream) throws IOException {
         DataInputStream dataInputStream = null;
         int dataLen = getDataLen(inputStream);
-        LLog.d(TAG,Thread.currentThread().getName()+": =======解析收到的数据=======:数据大小:"+dataLen);
+        LogUtil.d(Thread.currentThread().getName()+": =======解析收到的数据=======:数据大小:"+dataLen);
         dataInputStream = new DataInputStream(inputStream);
         byte[] buf = null;
 

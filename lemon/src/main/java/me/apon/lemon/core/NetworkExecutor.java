@@ -105,7 +105,7 @@ public class NetworkExecutor{
         final CountDownTimer countDownTimer = new CountDownTimer(1000*10*3,1000*10) {
             @Override
             public void onTick(long millisUntilFinished) {
-                LLog.d(TAG,"====重连====");
+                LogUtil.d("====重连====");
                 if (!mClient.isConnected()){
                     connect();
                 }else {
@@ -157,7 +157,7 @@ public class NetworkExecutor{
         @Override
         public void run() {
             mClient.connect();
-            LLog.d(TAG,Thread.currentThread().getName()+": =======开启连接线程========");
+            LogUtil.d(Thread.currentThread().getName()+": =======开启连接线程========");
 
             if (mClient.isConnected()){
                 receiveThread = new Thread(receiveRunnable,"ReceiveThread");
@@ -182,7 +182,7 @@ public class NetworkExecutor{
     private Runnable receiveRunnable = new Runnable() {
         @Override
         public void run() {
-            LLog.d(TAG,Thread.currentThread().getName()+": =======开启接收数据线程========");
+            LogUtil.d(Thread.currentThread().getName()+": =======开启接收数据线程========");
 //            InputStream in = null;
 
 
@@ -194,12 +194,12 @@ public class NetworkExecutor{
                         receiveData(in);
                     } catch (IOException e) {
 //                        e.printStackTrace();
-                        LLog.e(TAG,"=======断开连接========");
+                        LogUtil.e("=======断开连接========");
                         disconnectForError();
                     }
                 }
             }
-            LLog.d(TAG,Thread.currentThread().getName()+": =======退出接收数据线程========");
+            LogUtil.d(Thread.currentThread().getName()+": =======退出接收数据线程========");
             sendThread.interrupt();//退出发送线程
             pingThread.interrupt();//退出心跳线程
         }
@@ -209,7 +209,7 @@ public class NetworkExecutor{
 
         byte[] buf = mProtocols.unpack(in);
         if (buf!=null){
-            LLog.d(TAG,Thread.currentThread().getName()+": =======接收数据转发给"+ mMessageHandlerWrapList.size()+"个监听器=======:数据大小:"+buf.length);
+            LogUtil.d(Thread.currentThread().getName()+": =======接收数据转发给"+ mMessageHandlerWrapList.size()+"个监听器=======:数据大小:"+buf.length);
             for (int i = mMessageHandlerWrapList.size()-1; i >=0 ; i--) {
                 MessageHandlerWrap messageHandlerWrap = mMessageHandlerWrapList.get(i);
                 if (!messageHandlerWrap.isDisposed()){
@@ -226,7 +226,7 @@ public class NetworkExecutor{
 
         @Override
         public void run() {
-            LLog.d(TAG,Thread.currentThread().getName()+": =======开启发送数据线程========");
+            LogUtil.d(Thread.currentThread().getName()+": =======开启发送数据线程========");
             DataOutputStream dataOutputStream = null;
             try {
                 Socket socket = mClient.getSocket();
@@ -237,7 +237,7 @@ public class NetworkExecutor{
                     byte[] data = mProtocols.pack(packet.getData());
                     dataOutputStream.write(data);
                     dataOutputStream.flush();
-                    LLog.d(TAG,Thread.currentThread().getName()+": =======发送数据========:数据大小:"+data.length);
+                    LogUtil.d(Thread.currentThread().getName()+": =======发送数据========:数据大小:"+data.length);
 
                 }
 
@@ -257,7 +257,7 @@ public class NetworkExecutor{
                     }
                 }
             }
-            LLog.d(TAG,Thread.currentThread().getName()+": =======退出发送数据线程========");
+            LogUtil.d(Thread.currentThread().getName()+": =======退出发送数据线程========");
         }
     };
     /**
@@ -266,11 +266,11 @@ public class NetworkExecutor{
     private Runnable pingRunnable = new Runnable() {
         @Override
         public void run() {
-            LLog.d(TAG,Thread.currentThread().getName()+": =======开启心跳线程========");
+            LogUtil.d(Thread.currentThread().getName()+": =======开启心跳线程========");
             RequestPacket packet = new RequestPacket(mPingData);
             try {
                 while(!Thread.currentThread().isInterrupted()) {
-                    LLog.d(TAG,Thread.currentThread().getName()+": =======发送心跳包========:数据大小:"+mPingData.length);
+                    LogUtil.d(Thread.currentThread().getName()+": =======发送心跳包========:数据大小:"+mPingData.length);
                     getRequestQueue().put(packet);
                     Thread.sleep(mPingInterval*1000);
                 }
@@ -278,7 +278,7 @@ public class NetworkExecutor{
 
                 Thread.currentThread().interrupt();
             }
-            LLog.d(TAG,Thread.currentThread().getName()+": =======退出心跳线程========");
+            LogUtil.d(Thread.currentThread().getName()+": =======退出心跳线程========");
         }
     };
 

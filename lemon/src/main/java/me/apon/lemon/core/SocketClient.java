@@ -123,12 +123,12 @@ public class SocketClient implements Client {
 
             this.isConnected = true;
             this.isDisconnected = false;
-            LLog.d(TAG,"=========连接成功=========="+mAddress.getHostName()+":"+mAddress.getPort());
+            LogUtil.d("=========连接成功=========="+mAddress.getHostName()+":"+mAddress.getPort());
         } catch (IOException e) {
 //            e.printStackTrace();
             this.isConnected = false;
             this.isDisconnected = true;
-            LLog.d(TAG,"=========连接失败=========="+mAddress.getHostName()+":"+mAddress.getPort()+":"+e.getMessage());
+            LogUtil.d("=========连接失败=========="+mAddress.getHostName()+":"+mAddress.getPort()+":"+e.getMessage());
         }
     }
 
@@ -150,7 +150,7 @@ public class SocketClient implements Client {
             this.isConnected = false;
             this.isDisconnected = true;
 
-            LLog.d(TAG,"=========断开连接=========="+mAddress.getHostName()+":"+mAddress.getPort());
+            LogUtil.d("=========断开连接=========="+mAddress.getHostName()+":"+mAddress.getPort());
         } catch (NullPointerException
                 | IOException
                 e) {

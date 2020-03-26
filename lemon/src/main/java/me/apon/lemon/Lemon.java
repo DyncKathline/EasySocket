@@ -6,7 +6,7 @@ import me.apon.lemon.core.Client;
 import me.apon.lemon.core.ConnectHandler;
 import me.apon.lemon.core.ConnectHandlerWrap;
 import me.apon.lemon.core.Disposable;
-import me.apon.lemon.core.LLog;
+import me.apon.lemon.core.LogUtil;
 import me.apon.lemon.core.MessageHandler;
 import me.apon.lemon.core.MessageHandlerWrap;
 import me.apon.lemon.core.NetworkExecutor;
@@ -49,7 +49,7 @@ public class Lemon {
         }
 
         public Builder debug(boolean debug){
-            LLog.debug(debug);
+            LogUtil.debug(debug);
             return this;
         }
 

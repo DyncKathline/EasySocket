@@ -1,12 +1,12 @@
 package me.apon.lemonnet;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import me.apon.lemon.core.ConnectHandler;
 import me.apon.lemon.core.Disposable;
@@ -26,15 +26,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SocketClient client = new SocketClient.Builder()
-                .ip("120.78.175.94")
-                .port(7272)
+                .ip("192.168.31.117")
+                .port(8000)
                 .setKeepAlive(true)
                 .build();
-        String pingData = "{\"type\":\"ping-yaopeng\"}";
+        String pingData = "{\"type\":\"ping\"}";
         lemon = new Lemon.Builder()
                 .client(client)
                 .protocols(TextProtocols.create())
-                .pingInterval(10)
+                .pingInterval(20)
                 .pingData(pingData.getBytes())
                 .debug(true)
                 .build();
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void connectSuccess() {
                 Log.d(TAG,"===连接成功===");
-                lemon.send("连接成功-进入100房间-");
+                lemon.send("连接成功");
                 Toast.makeText(MainActivity.this, "连接成功!", Toast.LENGTH_SHORT).show();
             }
 
@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,"====1.数据监听====: "+new String(data));
             }
         });
-        lemon.onMessage(new MessageHandler() {
-            @Override
-            public void receive(byte[] data) {
-                Log.d(TAG,"====2.数据监听====: "+new String(data));
-            }
-        });
+//        lemon.onMessage(new MessageHandler() {
+//            @Override
+//            public void receive(byte[] data) {
+//                Log.d(TAG,"====2.数据监听====: "+new String(data));
+//            }
+//        });
         findViewById(R.id.start_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
