@@ -1,1 +1,1 @@
-include ':app', ':lemon'
+include ':app', ':EasySocket'
