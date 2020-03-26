@@ -1,23 +1,12 @@
-# 1.Lemon简介
+# 1.EasySocket简介
 
 Android Socket Client Library.
 
 一个简单、轻量级的Android Socket框架。
 
-
 # 2.使用
 
-添加依赖Gradle:
-
-```
-compile 'me.apon:lemon:1.0.0'
-
-or
-
-implementation 'me.apon:lemon:1.0.0'
-```
-
-构建Lemon对象
+构建EasySocket对象
 
 ```
 SocketClient client = new SocketClient.Builder()
@@ -27,7 +16,7 @@ SocketClient client = new SocketClient.Builder()
                 .build();
 //心跳包内容
 String pingData = "{\"type\":\"ping-yaopeng\"}";
-Lemon lemon = new Lemon.Builder()
+EasySocket socket = new EasySocket.Builder()
         .client(client) //设置SocketClient
         .protocols(TextProtocols.create()) //设置协议，可自定义
         .pingInterval(10) //设置心跳间隔（秒）大于0打开心跳功能
@@ -40,24 +29,24 @@ Lemon lemon = new Lemon.Builder()
 
 
 ```
-lemon.connect();//连接服务器
+socket.connect();//连接服务器
 
 String str = "hello apon！";
-lemon.send(str);//发送数据
+socket.send(str);//发送数据
 
-lemon.disconnect();//断开连接
+socket.disconnect();//断开连接
 ```
 
 添加连接回调，onConnect返回Disposable，可调用Disposable.dispose()方法移除当前回调。
 
 
 ```
-Disposable disposable = lemon.onConnect(new ConnectHandler() {
+Disposable disposable = socket.onConnect(new ConnectHandler() {
 
     @Override
     public void connectSuccess() {
         Log.d(TAG,"===连接成功===");
-        lemon.send("连接成功-进入100房间-");
+        lemon.send("连接成功");
         Toast.makeText(MainActivity.this, "连接成功!", Toast.LENGTH_SHORT).show();
     }
 
@@ -90,20 +79,20 @@ Disposable disposable = lemon.onMessage(new MessageHandler() {
 
 # 3.通讯协议
 
-Lemon支持text协议、frame协议。如果以上协议不满足你的业务需求，可以参考TextProtocols.java、FrameProtocols.java定制自己的协议。
+EasySocket支持text协议、frame协议。如果以上协议不满足你的业务需求，可以参考TextProtocols.java、FrameProtocols.java定制自己的协议。
 
 ## text协议
-Lemon定义了一种叫做text的文本协议，协议格式为 `数据包+换行符`，即在每个数据包末尾加上一个换行符表示包的结束。
+EasySocket定义了一种叫做text的文本协议，协议格式为 `数据包+换行符`，即在每个数据包末尾加上一个换行符表示包的结束。
 
 ## frame协议
 
-Lemon定义了一种叫做frame的协议，协议格式为 `总包长+包体`，其中包长为4字节网络字节序的整数，包体可以是普通文本或者二进制数据。
+EasySocket定义了一种叫做frame的协议，协议格式为 `总包长+包体`，其中包长为4字节网络字节序的整数，包体可以是普通文本或者二进制数据。
 
 
 配置协议
 
 ```
-Lemon lemon = new Lemon.Builder()
+EasySocket socket = new EasySocket.Builder()
         .client(client) //设置SocketClient
         .protocols(TextProtocols.create()) //使用text协议
         //.protocols(FrameProtocols.create()) //使用frame协议
@@ -134,13 +123,10 @@ Lemon lemon = new Lemon.Builder()
 
 实现
 
-在Lemon中开发的协议类必须实现Protocols接口，实现pack,unpack方法。Lemon会调用这两个方法打包、分包。（具体参考TextProtocols.java）
+在EasySocket中开发的协议类必须实现Protocols接口，实现pack,unpack方法。Lemon会调用这两个方法打包、分包。（具体参考TextProtocols.java）
 
 
 ```
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/11/4.
- */
 public class TextProtocols implements Protocols {
 
     private List<Byte> bytes;
@@ -215,9 +201,78 @@ public class TextProtocols implements Protocols {
 
 ```
 
-# 5.演示
+# 5.搭建node服务
+这里的hostname在本地就是内网地址
+直接运行node
+```
+node server.js
+```
+server.js
+```
+const net = require('net');
+const port = 8000;
+const hostname = '192.168.31.117';
 
-直接编译运行本项目，使用text协议连接echo服务器（120.78.175.94:7272）。
+// 定义两个变量， 一个用来计数，一个用来保存客户端
+let clients = {};
+let clientName = 0;
+
+// 创建服务器
+const server = new net.createServer();
+
+server.on('connection', (client) => {
+    client.name = ++clientName; // 给每一个client起个名
+    clients[client.name] = client; // 将client保存在clients
+    console.log(' Client connection:');
+    console.log(' local= %s:%s', client.localAddress, client.localPort);
+    console.log(' remote= %s:%s', client._remoteAddress, client._remoteAddress);
+
+    // client.setTimeout(500);
+    // client.setEncoding('utf8');
+
+    client.on('data', function (data) { //接收client发来的信息
+        console.log(`客户端${client.name}发来一个信息：${data}`);
+        console.log('Received data from client on port %d: %s', client.remotePort, data.toString());
+        console.log('Bytes received:', client.bytesRead);
+        writeData(client,'Sending:'+data.toString());
+        console.log(' Bytes sent:' + client.bytesWritten);
+    });
+
+    client.on('end', function () {
+        console.log('Client disconnected');
+    });
+
+    client.on('timeout', function () {
+        console.log('Socket Timed Out');
+    });
+
+    client.on('error', function (e) { //监听客户端异常
+        console.log('client error' + e);
+        client.end();
+    });
+
+    client.on('close', function () {
+        delete clients[client.name];
+        console.log(`客户端${client.name}下线了`);
+    });
+
+});
+
+function writeData(socket,data) {
+    var success = !socket.write(data);
+    // if (!success) {
+    //     (function(socket, data){
+    //         socket.once('drain', function () {
+    //             writeData(socket, data);
+    //         });
+    //     })(socket,data);
+    // }
+}
+
+server.listen(port, hostname, function () {
+    console.log(`服务器运行在：http://${hostname}:${port}`);
+});
+```
 
 # License
 
