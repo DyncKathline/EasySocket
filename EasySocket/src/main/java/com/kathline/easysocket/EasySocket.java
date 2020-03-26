@@ -1,7 +1,5 @@
 package com.kathline.easysocket;
 
-import java.nio.charset.Charset;
-
 import com.kathline.easysocket.core.Client;
 import com.kathline.easysocket.core.ConnectHandler;
 import com.kathline.easysocket.core.ConnectHandlerWrap;
@@ -11,6 +9,8 @@ import com.kathline.easysocket.core.MessageHandler;
 import com.kathline.easysocket.core.MessageHandlerWrap;
 import com.kathline.easysocket.core.NetworkExecutor;
 import com.kathline.easysocket.core.Protocols;
+
+import java.nio.charset.Charset;
 
 public class EasySocket {
 
@@ -97,5 +97,9 @@ public class EasySocket {
 
     public void disconnect(){
         mNetworkExecutor.disconnect();
+    }
+
+    public void destroy() {
+        mNetworkExecutor.destroy();
     }
 }

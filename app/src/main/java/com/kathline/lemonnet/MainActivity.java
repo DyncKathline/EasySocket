@@ -107,6 +107,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        easySocket.disconnect();
+        easySocket.destroy();
     }
 }

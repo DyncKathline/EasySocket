@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class NetworkExecutor{
+public class NetworkExecutor {
 
     private final static String TAG = NetworkExecutor.class.getSimpleName();
 
@@ -41,7 +41,7 @@ public class NetworkExecutor{
     private Thread connectThread;
 
 
-    public NetworkExecutor(Client mClient, Protocols mProtocols,int mPingInterval, byte[] mPingData, boolean isSaveOffLineMsg) {
+    public NetworkExecutor(Client mClient, Protocols mProtocols, int mPingInterval, byte[] mPingData, boolean isSaveOffLineMsg) {
         this.mClient = mClient;
         this.mProtocols = mProtocols;
         this.mPingInterval = mPingInterval;
@@ -62,6 +62,14 @@ public class NetworkExecutor{
             isForceStop = true;
             mClient.disconnect();
             connectHandler(3);
+            connectThread.interrupt();
+        }
+    }
+
+    public void destroy() {
+        if (mClient.isConnected()){
+            isForceStop = true;
+            mClient.disconnect();
             connectThread.interrupt();
         }
     }
