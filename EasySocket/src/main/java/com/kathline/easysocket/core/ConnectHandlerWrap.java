@@ -2,9 +2,6 @@ package com.kathline.easysocket.core;
 
 import java.util.List;
 
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/11/2.
- */
 public  class ConnectHandlerWrap implements ConnectHandler,Disposable{
 
     private boolean isDisposed = false;

@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
-
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/11/1.
- */
 public class NetworkExecutor{
 
     private final static String TAG = NetworkExecutor.class.getSimpleName();

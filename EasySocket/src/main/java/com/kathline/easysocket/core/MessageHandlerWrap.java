@@ -2,9 +2,6 @@ package com.kathline.easysocket.core;
 
 import java.util.List;
 
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/11/1.
- */
 public class MessageHandlerWrap implements MessageHandler,Disposable{
 
     private boolean isDisposed = false;

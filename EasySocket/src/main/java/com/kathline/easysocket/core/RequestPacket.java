@@ -1,8 +1,5 @@
 package com.kathline.easysocket.core;
 
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/11/1.
- */
 public class RequestPacket {
 
     private byte[] data;

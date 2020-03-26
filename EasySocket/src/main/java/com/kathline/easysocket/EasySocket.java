@@ -12,9 +12,6 @@ import com.kathline.easysocket.core.MessageHandlerWrap;
 import com.kathline.easysocket.core.NetworkExecutor;
 import com.kathline.easysocket.core.Protocols;
 
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/10/26.
- */
 public class EasySocket {
 
     public static final class Builder {

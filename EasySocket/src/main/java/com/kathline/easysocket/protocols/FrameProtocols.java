@@ -10,10 +10,6 @@ import java.nio.ByteOrder;
 import com.kathline.easysocket.core.LogUtil;
 import com.kathline.easysocket.core.Protocols;
 
-
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/10/26.
- */
 public class FrameProtocols implements Protocols {
 
     private final static String TAG = FrameProtocols.class.getSimpleName();

@@ -3,12 +3,7 @@ package com.kathline.easysocket.core;
 import android.os.Handler;
 import android.os.Looper;
 
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/11/1.
- */
 public class Schedulers {
-
-
 
     Handler mResponseHandler = new Handler(Looper.getMainLooper());
 

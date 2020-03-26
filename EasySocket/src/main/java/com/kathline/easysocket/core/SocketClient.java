@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/10/26.
- */
 public class SocketClient implements Client {
 
     private final static String TAG = SocketClient.class.getSimpleName();

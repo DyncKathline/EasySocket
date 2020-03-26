@@ -9,9 +9,6 @@ import java.util.List;
 
 import com.kathline.easysocket.core.Protocols;
 
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/11/4.
- */
 public class TextProtocols implements Protocols {
 
     private List<Byte> bytes;

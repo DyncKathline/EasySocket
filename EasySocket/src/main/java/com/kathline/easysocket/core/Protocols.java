@@ -3,9 +3,6 @@ package com.kathline.easysocket.core;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by yaopeng(aponone@gmail.com) on 2018/10/26.
- */
 public interface Protocols {
 
     /**
