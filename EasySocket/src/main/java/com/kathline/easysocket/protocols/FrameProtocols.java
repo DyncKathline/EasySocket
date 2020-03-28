@@ -10,6 +10,9 @@ import java.nio.ByteOrder;
 import com.kathline.easysocket.core.LogUtil;
 import com.kathline.easysocket.core.Protocols;
 
+/**
+ * 协议格式为 总包长+包体，其中包长为4字节网络字节序的整数，包体可以是普通文本或者二进制数据。
+ */
 public class FrameProtocols implements Protocols {
 
     private final static String TAG = FrameProtocols.class.getSimpleName();
@@ -17,7 +20,6 @@ public class FrameProtocols implements Protocols {
     public static FrameProtocols create(){
         return  new FrameProtocols();
     }
-
 
     private int getDataLen(InputStream in) throws IOException{
 
@@ -37,7 +39,7 @@ public class FrameProtocols implements Protocols {
     public byte[] unpack(InputStream inputStream) throws IOException {
         DataInputStream dataInputStream = null;
         int dataLen = getDataLen(inputStream);
-        LogUtil.d(Thread.currentThread().getName()+": =======解析收到的数据=======:数据大小:"+dataLen);
+//        LogUtil.d(Thread.currentThread().getName()+": =======解析收到的数据=======:数据大小:"+dataLen);
         dataInputStream = new DataInputStream(inputStream);
         byte[] buf = null;
 

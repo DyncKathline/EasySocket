@@ -9,6 +9,9 @@ import java.util.List;
 
 import com.kathline.easysocket.core.Protocols;
 
+/**
+ * 协议格式为 数据包+换行符，即在每个数据包末尾加上一个换行符表示包的结束。
+ */
 public class TextProtocols implements Protocols {
 
     private List<Byte> bytes;
@@ -35,7 +38,7 @@ public class TextProtocols implements Protocols {
             bytes.add(temp);
             Byte[] byteArray = bytes.toArray(new Byte[]{});
             if (endWith(byteArray,tail)){
-                result = getRangeBytes(bytes,0,bytes.size());
+                result = getRangeBytes(bytes,0,bytes.size() - tail.length);
                 break;
             }
         }
