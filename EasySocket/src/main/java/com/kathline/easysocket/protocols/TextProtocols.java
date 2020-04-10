@@ -51,7 +51,7 @@ public class TextProtocols implements Protocols {
     }
 
     private boolean endWith(Byte[] src, byte[] target) {
-        if (src.length < target.length) {
+        if (src.length == 0 || src.length < target.length) {
             return false;
         }
         for (int i = 0; i < target.length; i++) {//逆序比较
